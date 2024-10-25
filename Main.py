@@ -20,6 +20,19 @@ print(data_customers.shape[0]) # no. of rows
 print(data_customers.columns)
 print(data_customers.keys())
 print(data_customers['CustomerKey'].count())
+print(data_customers['CustomerKey'].unique())
+"""a = data_customers['CustomerKey'].unique()
+b = a.count()
+print(b)"""
+print(data_customers['CustomerKey'].nunique())
+print(data_customers['CustomerKey'].value_counts())
+print(data_customers.nunique())
+
+
+data_customers.drop_duplicates()  # the first step in cleaning i.e, dropping duplicates
 print(data_customers['CustomerKey'].value_counts())
 
+
+#  you can drop columns that you don't need as shown below
+# df.drop(columns = "the one you dont need")
 
