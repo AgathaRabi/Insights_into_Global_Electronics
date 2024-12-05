@@ -3,7 +3,9 @@ import pandas as pd
 
 # Read the csv file
 customers_data = pd.read_csv("C:\\Users\\PAPPILON\\Downloads\\Customers.csv", encoding = 'unicode_escape')
-
+sales_data = pd.read_csv("C:\\Users\\PAPPILON\\Downloads\\Sales.csv", encoding = 'unicode_escape')
+products_data = pd.read_csv("C:\\Users\\PAPPILON\\Downloads\\Products.csv", encoding = 'unicode_escape')
+stores_data = pd.read_csv("C:\\Users\\PAPPILON\\Downloads\\Stores.csv", encoding = 'unicode_escape')
 #print(customers_data)
 #print(type(customers_data))
 #print(customers_data.head())
@@ -56,13 +58,26 @@ print(customers_data['State'])
 #data_customers_excelfl = customers_data.xlsx
 #customers_data.to_excel(data_customers_excelfl)
 
-customers_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean.xlsx')
+#customers_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean.xlsx')
+
+sales_data['Delivery Date'] = sales_data['Delivery Date'].fillna(0)
+sales_data['Delivery Date'] = sales_data['Delivery Date'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y') if x!= 0 else x)
+
+sales_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean_sales.xlsx')
+
+## cleaning of products data
+
+#products_data['Product Name'] = products_data['Product Name'].str.replace(r'(\D+)(\d+)', r'\1 \2', regex = True) # tried to give space between units and name
+#products_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean_products.xlsx')
 
 
+## cleaning stores data
+# cleaning the opening date
+stores_data['Open Date'] = stores_data['Open Date'].apply(lambda x : pd.to_datetime(x).strftime('%d/%m/%y'))
+stores_data.to_excel('c:\\Users\\PAPPILON\\Downloads\\test_clean_stores.xlsx')
 
 
-
-
-
+#sales_data['Order Date'] = sales_data['Order Date'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y'))
+#sales_data['Delivery Date'] = sales_data['Delivery Date'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y'))
 
 

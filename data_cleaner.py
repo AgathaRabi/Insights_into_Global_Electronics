@@ -37,4 +37,34 @@ def customer_data_clean(df, date_format, state_name):
 
     df['Birthday'] = df['Birthday'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y'))
     df['State'] = df['State'].str.replace('-', " ")
+    #df.to_excel('test_clean_cust.xlsx')
+    #df.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean_cust.xlsx')
 
+    return df
+
+def sales_data_clean(df, order_date_format, delivery_date_format):
+    """
+
+    :param df:
+    :param order_date_format:
+    :param delivery_date_format:
+    :return:
+    """
+
+    df['Order Date'] = df['Order Date'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y'))
+    df['Delivery Date'] = df['Delivery Date'].fillna(0)
+    df['Delivery Date'] = df['Delivery Date'].apply(
+        lambda x: pd.to_datetime(x).strftime('%d/%m/%y') if x != 0 else x)
+
+    return df
+
+def stores_data_clean(df, open_date_format):
+    """
+
+    :param df:
+    :param open_date_format:
+    :return:
+    """
+    df['Open Date'] = df['Open Date'].apply(lambda x : pd.to_datetime(x).strftime('%d/%m/%y'))
+
+    return df
