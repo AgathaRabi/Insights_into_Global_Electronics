@@ -22,7 +22,7 @@ def clean_data(df, fill_values_dict):
     # return the cleaned data
     return df
 
-def customer_data_clean(df, date_format, state_name):
+def customer_data_clean(df):
 
     """
 

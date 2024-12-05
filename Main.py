@@ -11,4 +11,4 @@ exchange_rates_data = pd.read_csv("C:\\Users\\PAPPILON\\Downloads\\Exchange_Rate
 
 
 # clean the data
-customers_data_cleaned =
+customers_data_cleaned =dc.customer_data_clean(customers_data)
