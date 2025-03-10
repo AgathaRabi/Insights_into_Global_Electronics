@@ -42,7 +42,7 @@ def customer_data_clean(df):
 
     return df
 
-def sales_data_clean(df, order_date_format, delivery_date_format):
+def sales_data_clean(df):
     """
 
     :param df:
@@ -58,13 +58,25 @@ def sales_data_clean(df, order_date_format, delivery_date_format):
 
     return df
 
-def stores_data_clean(df, open_date_format):
+def stores_data_clean(df):
     """
 
     :param df:
-    :param open_date_format:
+
     :return:
     """
     df['Open Date'] = df['Open Date'].apply(lambda x : pd.to_datetime(x).strftime('%d/%m/%y'))
 
     return df
+
+def exchange_rates_data_clean(df):
+    """
+
+    :param df:
+    :return:
+    """
+
+    df['Date'] = df['Date'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y'))
+
+    return df
+
