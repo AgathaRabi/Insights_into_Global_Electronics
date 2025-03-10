@@ -21,6 +21,7 @@ exchange_rates_data = dc.clean_data(exchange_rates_data, 0)
 
 # clean the customer data
 customers_data = dc.customer_data_clean(customers_data)
+print(type(customers_data['Birthday']))
 
 # clean the sales data
 sales_data = dc.sales_data_clean(sales_data)
