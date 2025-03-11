@@ -56,10 +56,10 @@ print(customers_data['State'])
 
 # Now i want to save this data frame to excel file so that i can view the complete document:
 
-#data_customers_excelfl = customers_data.xlsx
-#customers_data.to_excel(data_customers_excelfl)
+#data_customers_excelfl = customers_data.xlsx # problem
+#customers_data.to_excel(data_customers_excelfl) # problem
 
-#customers_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean.xlsx')
+customers_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean.xlsx')
 
 sales_data['Delivery Date'] = sales_data['Delivery Date'].fillna(0)
 sales_data['Delivery Date'] = sales_data['Delivery Date'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y') if x!= 0 else x)

@@ -8,7 +8,6 @@ def CalculateAge(BirthDate):
     :param BirthDate:
     :return:
     """
-    print(type(BirthDate))
     today = date.today()
     age = today.year - BirthDate.year - ((today.month, today.day) < (BirthDate.month, BirthDate.day))
 
