@@ -3,6 +3,8 @@ import pandas as pd
 import data_cleaner as dc
 import data_analyzer as da
 from datetime import date
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Read the csv files
 customers_data = pd.read_csv("C:\\Users\\PAPPILON\\Downloads\\Customers.csv", encoding = 'unicode_escape')
@@ -49,3 +51,5 @@ print(demographic_analysis_gender_F)
 ###-----Analyzing the distribution of customers based on age:
 
 customers_data_with_age = da.AddAgeColumn(customers_data, 'Birthday')
+customers_data_with_age.to_excel('C:\\Users\\PAPPILON\\Downloads\\cust_data_age.xlsx')
+#customers_data_with_age.Age.hist()   # error -- matplotlib is required
