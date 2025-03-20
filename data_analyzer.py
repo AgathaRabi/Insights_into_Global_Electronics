@@ -4,9 +4,9 @@ from datetime import date
 
 def CalculateAge(BirthDate):
     """
-
     :param BirthDate:
-    :return:
+    :return: age
+    this function is to
     """
     today = date.today()
     age = today.year - BirthDate.year - ((today.month, today.day) < (BirthDate.month, BirthDate.day))

@@ -52,4 +52,5 @@ print(demographic_analysis_gender_F)
 
 customers_data_with_age = da.AddAgeColumn(customers_data, 'Birthday')
 customers_data_with_age.to_excel('C:\\Users\\PAPPILON\\Downloads\\cust_data_age.xlsx')
-#customers_data_with_age.Age.hist()   # error -- matplotlib is required
+customers_data_with_age.Age.hist()   # not seen
+plt.show()  # have to use this for the graph to be seen
