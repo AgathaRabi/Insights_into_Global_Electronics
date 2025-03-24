@@ -22,3 +22,10 @@ def AddAgeColumn(df, BirthDate):
     """
     df['Age'] = df[BirthDate].apply(CalculateAge)
     return df
+
+
+def AverageOrderValue():
+    """
+    :return:
+    """
+

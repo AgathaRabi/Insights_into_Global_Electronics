@@ -52,5 +52,29 @@ print(demographic_analysis_gender_F)
 
 customers_data_with_age = da.AddAgeColumn(customers_data, 'Birthday')
 customers_data_with_age.to_excel('C:\\Users\\PAPPILON\\Downloads\\cust_data_age.xlsx')
-customers_data_with_age.Age.hist()   # not seen
-plt.show()  # have to use this for the graph to be seen
+#customers_data_with_age.Age.hist()   # not seen
+#plt.show()  # have to use this for the graph to be seen
+customers_data_with_age['AgeGroup'] = pd.cut(customers_data_with_age.Age,
+                                             bins = [0, 29, 40, 200], right = True,
+                                             labels = ['Under 30', '30 - 40', 'Over 40'])
+plt.figure(figsize = (14, 12))
+sns.countplot(x = 'Country', data = customers_data_with_age, hue = 'AgeGroup')
+plt.show()
+
+###-----Analyzing the distribution of customers based on age:
+
+# this part we can directly do in power BI using data in SQL
+
+
+##-----Purchase Patterns -----
+
+
+###------Average order value:
+
+#.....first i need a data frame having the following data....CUSTOMER ID, ORDER AMOUNT, ORDER DATE
+
+data_frame_average_order_value = pd.concat([sales_data, products_data], axis = 1, ignore_index = False)
+#print('Merged Table using concat()')
+
+
+
