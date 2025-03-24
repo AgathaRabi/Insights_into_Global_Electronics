@@ -73,8 +73,9 @@ plt.show()
 
 #.....first i need a data frame having the following data....CUSTOMER ID, ORDER AMOUNT, ORDER DATE
 
-data_frame_average_order_value = pd.concat([sales_data, products_data], axis = 1, ignore_index = False)
+#data_frame_average_order_value = pd.concat([sales_data, products_data], axis = 1, ignore_index = False)
 #print('Merged Table using concat()')
 
-
+data_frame_average_order_value = sales_data.merge(products_data, how = 'inner', on = 'ProductKey')
+data_frame_average_order_value.to_excel('C:\\Users\\PAPPILON\\Downloads\\average_order_value_test.xlsx')
 
