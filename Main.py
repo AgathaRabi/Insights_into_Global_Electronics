@@ -76,6 +76,11 @@ plt.show()
 #data_frame_average_order_value = pd.concat([sales_data, products_data], axis = 1, ignore_index = False)
 #print('Merged Table using concat()')
 
-data_frame_average_order_value = sales_data.merge(products_data, how = 'inner', on = 'ProductKey')
-data_frame_average_order_value.to_excel('C:\\Users\\PAPPILON\\Downloads\\average_order_value_test.xlsx')
+#data_frame_average_order_value = pd.merge(sales_data, products_data, left_on=['ProductKey'],
+                                          #right_on = ['Unit Price USD'], how = 'left')
+#data_frame_average_order_value.to_excel('C:\\Users\\PAPPILON\\Downloads\\average_order_value_test.xlsx')
 
+data_frame_average_order_value = sales_data.merge(products_data, left_index = True, right_index = True,
+                                                  how = 'outer', suffixes = ('', '_DROP')).filter(regex = '^(?!.*_DROP)')
+
+data_frame_average_order_value.to_excel('C:\\Users\\PAPPILON\\Downloads\\average_order_value_test.xlsx')
