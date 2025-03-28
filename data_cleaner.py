@@ -61,6 +61,22 @@ def sales_data_clean(df):
 
     return df
 
+def products_data_clean(df):
+    """
+
+    :param df:
+    :return:
+    """
+    #df['Unit Cost USD'] = df['Unit Cost USD'].str.replace('$', "", ',',"").astype(float)
+    df['Unit Cost USD'] = df['Unit Cost USD'].apply(lambda x: x.replace('$', '').replace(',', ''))
+    df['Unit Cost USD'] = df['Unit Cost USD'].astype(float)
+
+    #df['Unit Price USD'] = df['Unit Price USD'].str.replace('$', "").astype(float)
+    df['Unit Price USD'] = df['Unit Price USD'].apply(lambda x: x.replace('$', '').replace(',', ''))
+    df['Unit Price USD'] = df['Unit Price USD'].astype(float)
+
+    return df
+
 def stores_data_clean(df):
     """
 

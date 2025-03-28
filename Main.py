@@ -28,6 +28,9 @@ print(type(customers_data['Birthday']))
 # clean the sales data
 sales_data = dc.sales_data_clean(sales_data)
 
+# clean the products data
+products_data = dc.products_data_clean(products_data)
+products_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\products_data_test.xlsx')
 
 # clean the stores data
 stores_data = dc.stores_data_clean(stores_data)
@@ -59,7 +62,7 @@ customers_data_with_age['AgeGroup'] = pd.cut(customers_data_with_age.Age,
                                              labels = ['Under 30', '30 - 40', 'Over 40'])
 plt.figure(figsize = (14, 12))
 sns.countplot(x = 'Country', data = customers_data_with_age, hue = 'AgeGroup')
-plt.show()
+#plt.show()
 
 ###-----Analyzing the distribution of customers based on age:
 
@@ -82,5 +85,15 @@ plt.show()
 
 #data_frame_average_order_value = sales_data.merge(products_data, left_index = True, right_index = True,
                                                   #how = 'outer', suffixes = ('', '_DROP')).filter(regex = '^(?!.*_DROP)')
-data_frame_average_order_value = pd.merge(sales_data, products_data,left_on = True, right_on = True, how = 'outer')
+#data_frame_average_order_value = pd.merge(sales_data, products_data,left_on = True, right_on = True, how = 'outer')
+#print("hello")
+data_frame_average_order_value = sales_data.merge(products_data, on = 'ProductKey')
+#print("hi")
 data_frame_average_order_value.to_excel('C:\\Users\\PAPPILON\\Downloads\\average_order_value_test.xlsx')
+
+data_frame_aov_group = data_frame_average_order_value.groupby('CustomerKey')['Unit Price USD'].sum()
+#print(data_frame_aov_group)
+
+demographic_analysis_new_df = customers_data[['CustomerKey']].copy()
+demographic_analysis_new_df.insert(2, 'Purchase Amount', data_frame_aov_group, True)
+demographic_analysis_new_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\demographic_analysis_new_df_test.xlsx')
