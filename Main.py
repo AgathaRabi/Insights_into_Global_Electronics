@@ -88,9 +88,10 @@ sns.countplot(x = 'Country', data = customers_data_with_age, hue = 'AgeGroup')
 #data_frame_average_order_value = pd.merge(sales_data, products_data,left_on = True, right_on = True, how = 'outer')
 #print("hello")
 sales_summary = sales_data.merge(products_data, on = 'ProductKey')
+dp.CalculateTotalProductPrice(sales_summary)  # calculating Total Product price
 customer_analysis_data_frame = sales_summary.merge(customers_data_with_age, on = 'CustomerKey')
 #print("hi")
-dp.CalculateTotalProductPrice(sales_summary)  # calculating Total Product price
+
 sales_summary.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_summary_before_group_test.xlsx')
 customer_analysis_data_frame.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_analysis_df_test.xlsx')
 
@@ -109,6 +110,6 @@ sales_summary = sales_summary.groupby(['Order Number', 'CustomerKey'])['Unit Pri
 sales_summary.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_summary_test.xlsx')
 # Iam trying to build a data frame to cover the entire customer analysis (demographic distribution and purchase patterns)
 customer_analysis_data_frame = customer_analysis_data_frame.groupby(['CustomerKey', 'City', 'State',
-                                                                     'Continent', 'Age']).agg({'Order Number': ['count'],
-                                                                                        'Unit Price USD': ['sum']})
+                                                                     'Continent', 'Age']).agg({'Order Number': ['nunique'],
+                                                                                        'Total Product Price': ['sum']})
 customer_analysis_data_frame.to_excel('C:\\Users\\PAPPILON\\Downloads\\cust_df_multiple_grbys.xlsx')
