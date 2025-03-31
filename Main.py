@@ -1,7 +1,7 @@
 import csv
 import pandas as pd
 import data_cleaner as dc
-import data_analyzer as da
+import data_preparation as da
 from datetime import date
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -87,13 +87,27 @@ sns.countplot(x = 'Country', data = customers_data_with_age, hue = 'AgeGroup')
                                                   #how = 'outer', suffixes = ('', '_DROP')).filter(regex = '^(?!.*_DROP)')
 #data_frame_average_order_value = pd.merge(sales_data, products_data,left_on = True, right_on = True, how = 'outer')
 #print("hello")
-data_frame_average_order_value = sales_data.merge(products_data, on = 'ProductKey')
+sales_summary = sales_data.merge(products_data, on = 'ProductKey')
+customer_analysis_data_frame = sales_summary.merge(customers_data_with_age, on = 'CustomerKey')
 #print("hi")
-data_frame_average_order_value.to_excel('C:\\Users\\PAPPILON\\Downloads\\average_order_value_test.xlsx')
+sales_summary.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_summary_before_group_test.xlsx')
+customer_analysis_data_frame.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_analysis_df_test.xlsx')
 
-data_frame_aov_group = data_frame_average_order_value.groupby('CustomerKey')['Unit Price USD'].sum()
+
+#data_frame_aov_group = data_frame_average_order_value.groupby('CustomerKey')['Unit Price USD'].sum()
 #print(data_frame_aov_group)
+#demographic_analysis_new_df = pd.DataFrame()
+#demographic_analysis_new_df = customers_data[['CustomerKey']].copy()
+#demographic_analysis_new_df.insert(2, 'Purchase Amount', data_frame_aov_group, True)
+#demographic_analysis_new_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\demographic_analysis_new_df_test.xlsx')
 
-demographic_analysis_new_df = customers_data[['CustomerKey']].copy()
-demographic_analysis_new_df.insert(2, 'Purchase Amount', data_frame_aov_group, True)
-demographic_analysis_new_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\demographic_analysis_new_df_test.xlsx')
+#data_frame_average_order_value.merge(data_frame_aov_group, on = 'CustomerKey')
+
+#sales_summary['Total Purchase'] = sales_summary.groupby('CustomerKey')['Unit Price USD'].sum()
+sales_summary = sales_summary.groupby(['Order Number', 'CustomerKey'])['Unit Price USD'].sum()
+sales_summary.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_summary_test.xlsx')
+# Iam trying to build a data frame to cover the entire customer analysis (demographic distribution and purchase patterns)
+customer_analysis_data_frame = customer_analysis_data_frame.groupby(['CustomerKey', 'City', 'State',
+                                                                     'Continent', 'Age']).agg({'Order Number': ['count'],
+                                                                                        'Unit Price USD': ['sum']})
+customer_analysis_data_frame.to_excel('C:\\Users\\PAPPILON\\Downloads\\cust_df_multiple_grbys.xlsx')
