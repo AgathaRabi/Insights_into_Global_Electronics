@@ -14,7 +14,6 @@ def CalculateAge(BirthDate):
     return age
 
 
-
 def AddAgeColumn(df, BirthDate):
     """
 
@@ -41,3 +40,21 @@ def AverageOrderValue():
     :return:
     """
 
+## trying one function for customer analysis dataframe
+
+def customer_analysis_details(customers_data, sales_data, products_data):
+    """
+
+    :param customers_data:
+    :param sales_data:
+    :param products_data:
+    :return:
+    """
+    customers_data['Age'] = customers_data['BirthDate'].apply(CalculateAge)
+    sales_data.merge(products_data, on='ProductKey')
+    sales_data['Total Product Price'] = sales_data['Quantity'] * sales_data['Unit Price USD']
+    df = sales_data.merge(customers_data, on = 'CustomerKey')
+    df = df.groupby(['CustomerKey', 'City', 'State', 'Continent', 'Age']).agg({'Order Number': ['nunique'],
+                                                                               'Total Product Price': ['sum']})
+
+    return df

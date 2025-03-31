@@ -42,6 +42,8 @@ exchange_rates_data = dc.exchange_rates_data_clean(exchange_rates_data)
 
 # --- CUSOMER ANALYSIS ---
 
+##-----Calling the data prepared:
+
 ##-----Demographic distribution -----
 
 ###-----Analyzing the distribution of customers based on gender:
