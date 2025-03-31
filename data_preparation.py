@@ -13,6 +13,16 @@ def CalculateAge(BirthDate):
 
     return age
 
+def CalculateTotalProductPrice(df):
+    """
+
+    :param df:
+    :return:
+    """
+    df['Total Product Price'] = df['Quantity'] * df['Unit Price USD']
+
+    return df
+
 def AddAgeColumn(df, BirthDate):
     """
 

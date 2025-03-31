@@ -1,7 +1,7 @@
 import csv
 import pandas as pd
 import data_cleaner as dc
-import data_preparation as da
+import data_preparation as dp
 from datetime import date
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -53,7 +53,7 @@ print(demographic_analysis_gender_F)
 
 ###-----Analyzing the distribution of customers based on age:
 
-customers_data_with_age = da.AddAgeColumn(customers_data, 'Birthday')
+customers_data_with_age = dp.AddAgeColumn(customers_data, 'Birthday')
 customers_data_with_age.to_excel('C:\\Users\\PAPPILON\\Downloads\\cust_data_age.xlsx')
 #customers_data_with_age.Age.hist()   # not seen
 #plt.show()  # have to use this for the graph to be seen
@@ -90,6 +90,7 @@ sns.countplot(x = 'Country', data = customers_data_with_age, hue = 'AgeGroup')
 sales_summary = sales_data.merge(products_data, on = 'ProductKey')
 customer_analysis_data_frame = sales_summary.merge(customers_data_with_age, on = 'CustomerKey')
 #print("hi")
+dp.CalculateTotalProductPrice(sales_summary)  # calculating Total Product price
 sales_summary.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_summary_before_group_test.xlsx')
 customer_analysis_data_frame.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_analysis_df_test.xlsx')
 
