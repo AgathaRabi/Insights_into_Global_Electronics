@@ -68,15 +68,11 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
 
     # Group the customer_product_sales_df to get sales data for each order by customers
     # This data should be helpful for getting insights such as average order value, average order value by gender, age-range, etc.
-    customer_sales_df = customer_products_sales_df.groupby(['CustomerKey', 'City', 'State',
-                                                            'Continent', 'Age', 'AgeGroup']).agg({'Order Number' : 'nunique',
-                                                                                                  'Total Product Price' : 'sum'})
-    cust_sales_analysis_data_dict = {}
-    cust_sales_analysis_data_dict['customer_product_sales_data'] = customer_products_sales_df
-    cust_sales_analysis_data_dict['customer_sales_data'] = customer_sales_df
-    """df = sales_data.merge(customers_data, on = 'CustomerKey')
-    df = df.groupby(['CustomerKey', 'City', 'State', 'Continent', 'Age']).agg({'Order Number': ['nunique'],
-                                                                               'Total Product Price': ['sum']})"""
+    """customer_sales_df = customer_products_sales_df.groupby(['Order Number', 'CustomerKey', 'City', 'State',
+                                                            'Continent', 'Age', 'AgeGroup']).agg({'Total Product Price': ['sum']})
 
-    return customer_sales_df
+    customer_sales_df.rename(columns={'Total Product Price': 'Order Value'})"""
+
+    return customer_products_sales_df
+
 # try #

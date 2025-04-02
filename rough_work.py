@@ -59,3 +59,13 @@ customer_analysis_data_frame = customer_analysis_data_frame.groupby(['CustomerKe
                                                                      'Continent', 'Age']).agg({'Order Number': ['nunique'],
                                                                                         'Total Product Price': ['sum']})
 customer_analysis_data_frame.to_excel('C:\\Users\\PAPPILON\\Downloads\\cust_df_multiple_grbys.xlsx')
+
+
+# from data preparation
+
+cust_sales_analysis_data_dict = {}
+    cust_sales_analysis_data_dict['customer_product_sales_data'] = customer_products_sales_df
+    cust_sales_analysis_data_dict['customer_sales_data'] = customer_sales_df
+    """df = sales_data.merge(customers_data, on = 'CustomerKey')
+    df = df.groupby(['CustomerKey', 'City', 'State', 'Continent', 'Age']).agg({'Order Number': ['nunique'],
+                                                                               'Total Product Price': ['sum']})"""

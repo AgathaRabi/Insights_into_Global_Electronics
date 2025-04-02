@@ -53,4 +53,8 @@ exchange_rates_data = dc.exchange_rates_data_clean(exchange_rates_data)
 ###------Average order value:
 
 customer_products_sales_df = dp.data_for_cust_sales_analysis(customers_data, sales_data, products_data)
-customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_prodcts_sales_analysis_test.xlsx')
+customer_sales_df = customer_products_sales_df.groupby(['Order Number', 'CustomerKey', 'City', 'State',
+                                                            'Continent', 'Age', 'AgeGroup']).agg({'Total Product Price': ['sum']})
+
+customer_sales_df.rename(columns={'Total Product Price': 'Order Value'})
+customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_sales_analysis_test242510am.xlsx')
