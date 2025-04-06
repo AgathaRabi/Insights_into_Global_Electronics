@@ -69,3 +69,59 @@ cust_sales_analysis_data_dict = {}
     """df = sales_data.merge(customers_data, on = 'CustomerKey')
     df = df.groupby(['CustomerKey', 'City', 'State', 'Continent', 'Age']).agg({'Order Number': ['nunique'],
                                                                                'Total Product Price': ['sum']})"""
+
+
+
+## from database interface:
+def drop_and_create_cust_prodts_sales_dets_table(db_conn):
+    """
+    Function to drop the current channel table, if it exists
+    and create a new empty table.
+
+    Parameters:
+    ----------
+    db_conn:
+        The database connection object
+    """
+
+    cursor = db_conn.cursor()
+
+    drop_query = '''drop table if exists channels'''
+    cursor.execute(drop_query)
+
+    try:
+        create_query = '''create table if not exists channels(Order_Number varchar(100),
+                                                                Line_Item int,
+                                                                Order_Date datetime,
+                                                                Delivery_Date datetime, 
+                                                                Customer_Key varchar(80) primary key,
+                                                                Store_Key varchar(80),
+                                                                Product_Key varchar(80),
+                                                                Quantity int,
+                                                                Currency_Code varchar(80),
+                                                                Product_Name varchar(400),
+                                                                Brand varchar(250),
+                                                                Color varchar(100),
+                                                                Unit_Cost_USD float(100),
+                                                                Unit_Price_USD float(200),
+                                                                Sub_Category_Key varchar(50),
+                                                                Sub_Category varchar(300),
+                                                                Category_Key varchar(100),
+                                                                Category varchar(200),
+                                                                Total_Product_Price float(100),
+                                                                Gender text(50),
+                                                                Name varchar(100),
+                                                                City varchar(200),
+
+
+                                                                Subscribers_Count bigint,
+                                                                Views_Channel bigint,
+                                                                Total_Videos int,
+                                                                Channel_Description text,
+                                                                Playlist_Id varchar(80))'''
+        cursor.execute(create_query)
+
+        db_conn.commit()
+
+    except:
+        print("Error in creating channels table!")

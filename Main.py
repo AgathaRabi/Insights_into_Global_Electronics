@@ -2,6 +2,7 @@ import csv
 import pandas as pd
 import data_cleaner as dc
 import data_preparation as dp
+import database_interface as dbi
 from datetime import date
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -52,9 +53,6 @@ exchange_rates_data = dc.exchange_rates_data_clean(exchange_rates_data)
 
 ###------Average order value:
 
-customer_products_sales_df = dp.data_for_cust_sales_analysis(customers_data, sales_data, products_data)
-customer_sales_df = customer_products_sales_df.groupby(['Order Number', 'CustomerKey', 'City', 'State',
-                                                            'Continent', 'Age', 'AgeGroup']).agg({'Total Product Price': ['sum']})
-
-customer_sales_df.rename(columns={'Total Product Price': 'Order Value'})
-customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_sales_analysis_test242510am.xlsx')
+cust_sales_analysis_data_dictionary = dp.data_for_cust_sales_analysis(customers_data, sales_data, products_data)
+engine = dbi.get_local_engine()
+dbi.drop_and_create_cust_prodts_sales_dets_table(cust_sales_analysis_data_dictionary, engine)

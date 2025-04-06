@@ -67,12 +67,23 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
     customer_products_sales_df = sales_details_df.merge(customers_data_cleaned, on = 'CustomerKey')
 
     # Group the customer_product_sales_df to get sales data for each order by customers
-    # This data should be helpful for getting insights such as average order value, average order value by gender, age-range, etc.
-    """customer_sales_df = customer_products_sales_df.groupby(['Order Number', 'CustomerKey', 'City', 'State',
-                                                            'Continent', 'Age', 'AgeGroup']).agg({'Total Product Price': ['sum']})
+    # This data should be helpful for getting insights such as average order value,
+    # average order value by gender, age-range, etc.
+    customer_sales_df = (customer_products_sales_df.groupby(['Order Number', 'CustomerKey', 'City', 'State',
+                                                                         'Country', 'Continent', 'Gender', 'Age',
+                                                             'AgeGroup'], observed=True, as_index=False).agg({'Total Product Price': 'sum'}))
 
-    customer_sales_df.rename(columns={'Total Product Price': 'Order Value'})"""
+    customer_sales_df.rename(columns={'Total Product Price': 'Order Value'}, inplace = True)
 
-    return customer_products_sales_df
+    # converting to excel for reference.
+    customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_df_test2425AN.xlsx')
+    customer_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_sales_df_test2425AN.xlsx')
+
+    # placing these data sets in a dictionary
+    cust_sales_analysis_data_dict = {}
+    cust_sales_analysis_data_dict['customer_products_sales_data'] = customer_products_sales_df
+    cust_sales_analysis_data_dict['customer_sales_data'] = customer_sales_df
+
+    return cust_sales_analysis_data_dict
 
 # try #
