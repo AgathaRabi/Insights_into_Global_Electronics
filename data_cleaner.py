@@ -26,13 +26,14 @@ def customer_data_clean(df):
 
     """
 
-    :param customers_data:
+    :param df (data frame) - (customers_data)
             is the data frame on which the following specific cleaning steps are done.
-    :param date_format:
-            the date format is not uniform. The format is to be made uniform.
-    :param state_name:
+
+    birthday : the date format is not uniform. The format is to be made uniform. the format is to
+            be such that, age can be calculated
+    state_name:
             some state names have gaps others '-', replacing '-' with ' '.
-    :return:
+    :return: returns cleaned data
     """
 
     #df['Birthday'] = df['Birthday'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y'))
@@ -48,9 +49,7 @@ def customer_data_clean(df):
 def sales_data_clean(df):
     """
 
-    :param df:
-    :param order_date_format:
-    :param delivery_date_format:
+    :param : df:
     :return:
     """
 
@@ -98,4 +97,5 @@ def exchange_rates_data_clean(df):
     df['Date'] = df['Date'].apply(lambda x: pd.to_datetime(x).strftime('%d/%m/%y'))
 
     return df
+
 

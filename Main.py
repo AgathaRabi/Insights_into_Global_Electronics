@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 import data_cleaner as dc
 import data_preparation as dp
-import database_interface as dbi
+import database_interface as db_int
 from datetime import date
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -24,8 +24,9 @@ exchange_rates_data = dc.clean_data(exchange_rates_data, 0)
 
 # clean the customer data
 customers_data = dc.customer_data_clean(customers_data)
-print(type(customers_data['Birthday']))
 
+print(type(customers_data['Birthday']))
+customers_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean.xlsx')
 # clean the sales data
 sales_data = dc.sales_data_clean(sales_data)
 
@@ -39,6 +40,22 @@ stores_data = dc.stores_data_clean(stores_data)
 # clean the exchange rates data
 exchange_rates_data = dc.exchange_rates_data_clean(exchange_rates_data)
 
+# set the index for each df
+#customers_data.reset_index(drop=True, inplace = True)
+
+customers_data.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean.xlsx')
+print('Hi')
+
+# Get the local DB connection
+db_conn = db_int.get_local_db_conn()
+
+# Drop and create the respective fresh SQL tables
+db_int.drop_and_create_customers_data_table(db_conn) # for customer analysis
+
+# Add data to the created SQL tables
+db_int.add_data_to_customers_data_table(customers_data,db_conn) # for customer analysis
+
+print('hello')
 # ------------------ DATA ANALYSIS ------------
 
 # --- CUSOMER ANALYSIS ---
@@ -53,6 +70,6 @@ exchange_rates_data = dc.exchange_rates_data_clean(exchange_rates_data)
 
 ###------Average order value:
 
-cust_sales_analysis_data_dictionary = dp.data_for_cust_sales_analysis(customers_data, sales_data, products_data)
-engine = dbi.get_local_engine()
-dbi.drop_and_create_cust_prodts_sales_dets_table(cust_sales_analysis_data_dictionary, engine)
+cust_sales_analysis_data_dictionary = dp.data_for_cust_sales_analysis(customers_data, sales_data, products_data, stores_data)
+engine = db_int.get_local_engine()
+db_int.drop_and_create_cust_prodts_sales_dets_table(cust_sales_analysis_data_dictionary, engine)
