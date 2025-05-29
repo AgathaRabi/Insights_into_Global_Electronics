@@ -70,6 +70,6 @@ print('hello')
 
 ###------Average order value:
 
-cust_sales_analysis_data_dictionary = dp.data_for_cust_sales_analysis(customers_data, sales_data, products_data, stores_data)
+cust_sales_analysis_data_dictionary = dp.data_for_cust_sales_analysis(customers_data, sales_data, products_data, stores_data, exchange_rates_data)
 engine = db_int.get_local_engine()
 db_int.drop_and_create_cust_prodts_sales_dets_table(cust_sales_analysis_data_dictionary, engine)

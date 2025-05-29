@@ -37,7 +37,7 @@ def CalculateTotalProductPrice(df):
 
 
 
-def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, products_data_cleaned, stores_data_cleaned):
+def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, products_data_cleaned, stores_data_cleaned, exchange_rates_data_cleaned):
     """
 
     :param customers_data:
@@ -97,15 +97,27 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
 
     customer_sales_nil_purchase = (customer_sales_df.groupby(['CustomerKey'], observed=True,
                                                             as_index=False).agg({'Order Number': 'nunique'}))
-    nil_purchase_customers = customers_data_cleaned.merge(customer_sales_nil_purchase, on='CustomerKey', how='left')
+    nil_purchase_customers_df = customers_data_cleaned.merge(customer_sales_nil_purchase, on='CustomerKey', how='left')
+    nil_purchase_customers_df.fillna({'Order Number': 0}, inplace=True)
+
+    # exchange rate analysis:
+    #sales_data_cleaned.rename(columns={'Order Date': 'Date for Analysis'}, inplace=True)
+    exchange_rates_data_cleaned.rename(columns={'Date': 'Order Date'}, inplace=True)
+    exchange_rates_data_cleaned.rename(columns={'Currency': 'Currency Code'}, inplace=True)
+    #sales_exchange_rate_analysis_df = sales_data_cleaned.merge(exchange_rates_data_cleaned,
+                                        #on = ['Date for Analysis', 'Currency Code'], how = 'left')
+    sales_exchange_rate_analysis_df = customer_products_sales_stores_df.merge(exchange_rates_data_cleaned,
+                                        on = ['Order Date', 'Currency Code'], how = 'left')
+
 
     # converting to excel for reference.
-    #customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_df_test2425AN.xlsx')
+    customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_df_test2425AN.xlsx')
     customer_products_sales_stores_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_stores_df_test2425AN.xlsx')
     customer_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_sales_df_test2425AN.xlsx')
     stores_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\stores_sales_df_test2425AN.xlsx')
     products_profits_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\products_profits_df_test2425AN.xlsx')
-    nil_purchase_customers.to_excel('C:\\Users\\PAPPILON\\Downloads\\nil_purchase_customers_test2425AN.xlsx')
+    nil_purchase_customers_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\nil_purchase_customers_test2425AN.xlsx')
+    sales_exchange_rate_analysis_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_exchange_rate_analysis_test2425AN.xlsx')
 
     # placing these data sets in a dictionary
     cust_sales_analysis_data_dict = {}
@@ -114,6 +126,8 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
     cust_sales_analysis_data_dict['customer_sales_data'] = customer_sales_df
     cust_sales_analysis_data_dict['stores_sales_data'] = stores_sales_df
     cust_sales_analysis_data_dict['products_profits_data'] = products_profits_df
+    cust_sales_analysis_data_dict['nil_purchase_customers'] = nil_purchase_customers_df
+    cust_sales_analysis_data_dict['sales_exchange_rate_analysis'] = sales_exchange_rate_analysis_df
     return cust_sales_analysis_data_dict
 
 # try #

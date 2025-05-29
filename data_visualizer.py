@@ -21,3 +21,6 @@ def get_local_db_conn():
     my_data_base_conn.autocommit = True
 
     return my_data_base_conn
+
+
+
