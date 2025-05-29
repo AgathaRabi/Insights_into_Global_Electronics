@@ -72,8 +72,8 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
     # Group the customer_product_sales_df to get sales data for each order by customers
     # This data should be helpful for getting insights such as average order value,
     # average order value by gender, age-range, etc.
-    customer_sales_df = (customer_products_sales_df.groupby(['Order Number', 'StoreKey', 'CustomerKey', 'City', 'State',
-                                                                         'Country', 'Continent', 'Gender', 'Age',
+    customer_sales_df = (customer_products_sales_df.groupby(['Order Number', 'StoreKey', 'CustomerKey', 'Name',
+                                                             'City', 'State', 'Country', 'Continent', 'Gender', 'Age',
                                                              'AgeGroup', 'Year'], observed=True, as_index=False).agg({'Total Product Price': 'sum'}))
 
     customer_sales_df.rename(columns={'Total Product Price': 'Order Value'}, inplace = True)
@@ -109,6 +109,7 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
     sales_exchange_rate_analysis_df = customer_products_sales_stores_df.merge(exchange_rates_data_cleaned,
                                         on = ['Order Date', 'Currency Code'], how = 'left')
 
+    sales_exchange_rate_analysis_df = sales_exchange_rate_analysis_df.round({'Exchange':1})
 
     # converting to excel for reference.
     customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_df_test2425AN.xlsx')
