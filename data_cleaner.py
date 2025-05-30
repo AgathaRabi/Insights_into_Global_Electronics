@@ -41,8 +41,8 @@ def customer_data_clean(df):
     #df['Birthday'] = df['Birthday'].apply(lambda x: pd.to_datetime(x, format= "ISO8601" ))
     df['Birthday'] = df['Birthday'].apply(lambda x: pd.to_datetime(x, format="mixed"))
     df['State'] = df['State'].str.replace('-', " ")
-    df.to_excel('test_clean_cust.xlsx')
-    df.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean_cust.xlsx')
+    #df.to_excel('test_clean_cust.xlsx')
+    #df.to_excel('C:\\Users\\PAPPILON\\Downloads\\test_clean_cust.xlsx')
 
     return df
 

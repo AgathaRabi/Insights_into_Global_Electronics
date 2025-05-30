@@ -57,7 +57,7 @@ def drop_and_create_cust_prodts_sales_dets_table(cust_products_details_dict, eng
     """
 
     for table_name, df in cust_products_details_dict.items():
-        print(df.head())
+        # TEST :print(df.head())
         df.to_sql(table_name, con = engine, if_exists = 'replace', index = False)
 
 
