@@ -110,15 +110,10 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
                                         on = ['Order Date', 'Currency Code'], how = 'left')
 
     sales_exchange_rate_analysis_df = sales_exchange_rate_analysis_df.round({'Exchange':1})
+    exchange_rate_analysis_df = sales_exchange_rate_analysis_df.groupby(['Exchange', 'Currency Code'] , observed=True, as_index=False).agg(
+                                                                {'Total Product Price': 'sum', 'Net Profit': 'sum',
+                                                                 'ProductKey': 'count'})
 
-    # converting to excel for reference.
-    customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_df_test2425AN.xlsx')
-    customer_products_sales_stores_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_stores_df_test2425AN.xlsx')
-    customer_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_sales_df_test2425AN.xlsx')
-    stores_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\stores_sales_df_test2425AN.xlsx')
-    products_profits_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\products_profits_df_test2425AN.xlsx')
-    nil_purchase_customers_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\nil_purchase_customers_test2425AN.xlsx')
-    sales_exchange_rate_analysis_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_exchange_rate_analysis_test2425AN.xlsx')
 
     # placing these data sets in a dictionary
     cust_sales_analysis_data_dict = {}
@@ -129,8 +124,30 @@ def data_for_cust_sales_analysis(customers_data_cleaned, sales_data_cleaned, pro
     cust_sales_analysis_data_dict['products_profits_data'] = products_profits_df
     cust_sales_analysis_data_dict['nil_purchase_customers'] = nil_purchase_customers_df
     cust_sales_analysis_data_dict['sales_exchange_rate_analysis'] = sales_exchange_rate_analysis_df
+    cust_sales_analysis_data_dict['exchange_rate_analysis'] = exchange_rate_analysis_df
+
     return cust_sales_analysis_data_dict
 
+
+
+
+
+
+
+
+# Rough
 # try #
 
 # stores_ sales ,  --'CustomerKey': pd.Series.nunique
+
+
+"""    # converting to excel for reference.
+    customer_products_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_df_test2425AN.xlsx')
+    customer_products_sales_stores_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_products_sales_stores_df_test2425AN.xlsx')
+    customer_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\customer_sales_df_test2425AN.xlsx')
+    stores_sales_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\stores_sales_df_test2425AN.xlsx')
+    products_profits_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\products_profits_df_test2425AN.xlsx')
+    nil_purchase_customers_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\nil_purchase_customers_test2425AN.xlsx')
+    sales_exchange_rate_analysis_df.to_excel('C:\\Users\\PAPPILON\\Downloads\\sales_exchange_rate_analysis_test2425AN.xlsx')
+    exchange_rate_analysis_df.to_excel(
+        'C:\\Users\\PAPPILON\\Downloads\\exchange_rate_analysis_test2425AN.xlsx')"""
