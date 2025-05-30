@@ -1,6 +1,4 @@
----A. CUSTOMER ANALYSIS
-
---- A.1 DEMOGRAPHIC DISTRIBUTION
+---QUERIES FOR ANALYSIS:
 
 --1. No. of female customers:
 
@@ -50,7 +48,7 @@ ORDER BY COUNT ("CustomerKey") DESC
 LIMIT 25;
 
 
---x. list of customers who ordered more than once:
+--6. list of customers who ordered more than once:
 
 SELECT "CustomerKey",
 COUNT("CustomerKey") AS times_ordered
@@ -60,16 +58,9 @@ HAVING COUNT("CustomerKey") > 1
 ORDER BY COUNT ("CustomerKey") DESC
 LIMIT 25;
 
---X. customer location and average order value taking exchange rates into consideration:
 
-SELECT "State", "City"
-		, ROUND(AVG("Quantity" * "Unit Price USD" * "Exchange" )) as AVG_total_sales
-FROM sales_exchange_rate_analysis
-GROUP BY "State", "City"
-ORDER BY AVG_total_sales DESC;
-LIMIT 25
 
---6.List of customers, purchasing products from multiple branches/ online:
+--7.List of customers, purchasing products from multiple branches/ online:
 
 SELECT "CustomerKey"	
 FROM customer_sales_data
@@ -77,25 +68,31 @@ GROUP BY 1
 HAVING COUNT(DISTINCT "StoreKey")>1;
 
 
----- A.2 PURCHASE PATTERNS
-
---7. PREFERRED PRODUCTS:
+--8. PREFERRED PRODUCTS:
 
 SELECT "ProductKey", "Product Name"
 		,COUNT("ProductKey") AS no_times_sold 			
 FROM customer_products_sales_data
 GROUP BY "ProductKey", "Product Name"
 ORDER BY COUNT ('no_times_sold') DESC
-LIMIT 100;
+LIMIT 10;
 
 
--- 8. PREFERRED CATEGORY OF PRODUCTS: ## also sales by product
+--9. PREFERRED CATEGORY OF PRODUCTS: ## also sales by product
 
 SELECT "Category", COUNT("Category") AS no_times_sold
 FROM customer_products_sales_data
 GROUP BY "Category"
 ORDER BY COUNT ('no_times_sold') DESC;
 
+
+--10. PREFERRED SUB-CATEGORY OF PRODUCTS: ## also sales by product
+
+SELECT "Subcategory", COUNT("Subcategory") AS no_times_sold
+FROM customer_products_sales_data
+GROUP BY "Subcategory"
+ORDER BY COUNT ('no_times_sold') DESC
+LIMIT 15;
 
 -- 9. average order value:
 
@@ -106,7 +103,7 @@ SELECT "Year"
 FROM customer_sales_data
 GROUP BY "Year"
 ORDER BY "Year" ASC;
-
+-----------------------------------------------------------
 SELECT "Year", "AgeGroup"
 		,COUNT("Order Number") AS no_orders
 		,ROUND(SUM("Order Value")) AS Revenue
@@ -116,35 +113,19 @@ GROUP BY "Year", "AgeGroup"
 ORDER BY "Year" ASC;
 
 
---10. Identifying countries with higher 'over40' customers and fewer physical stores:
+--10. Identifying countries with higher 
+          --'over40' customers' orders and fewer physical stores:
 
 SELECT "Country"
-		,COUNT("AgeGroup") AS "over_40"
+		,COUNT("AgeGroup") AS "orders_by_over_40"
 		, COUNT(DISTINCT "StoreKey") AS "store_count"
 FROM customer_products_sales_stores_data
 WHERE "AgeGroup" = 'Over 40' AND "StoreKey" != '0'
 GROUP BY "Country" 
 ORDER BY COUNT ("StoreKey") ASC;
 
----------------------------------------
 
-SELECT COUNT("AgeGroup") AS "over_40"
-		, COUNT(DISTINCT "StoreKey") AS "store_count"
-FROM customer_products_sales_stores_data
-WHERE "AgeGroup" = 'Over 40'
-ORDER BY COUNT ("StoreKey") ASC;
-
-
-------------------------------------------------------------------------------
---4. No. of male and female Customers who have ordered 10 & more than 10 times:
-
---5. No. of male and female Customers who have ordered from 5 to 9 times:
-
-
-
---- B. SALES ANALYSIS:
-
---x. to calculate the sales in each store:
+--11. to calculate the sales in each store:
 
 SELECT "StoreKey"
 		, ROUND(SUM ("Total Product Price")) AS "total_sales_USD"
@@ -152,38 +133,39 @@ FROM customer_products_sales_data
 GROUP BY "StoreKey"
 ORDER BY "StoreKey" ASC;
 
------------------------------------------
-SELECT "StoreKey"
-		,"Country"
-		, ROUND(SUM ("Total Product Price")) AS "total_sales_USD"
-FROM customer_products_sales_data
-GROUP BY "StoreKey", "Country"
-ORDER BY "total_sales_USD" DESC;
-
----------------------------------------
-
---x.countries and their online sales:
+--12.countries and their online sales REVENUE:
 
 SELECT "StoreKey"
 		,"Country"
-		, ROUND(SUM ("Total Product Price")) AS "total_sales_USD"
+		, ROUND(SUM ("Total Product Price")) AS "revenue_USD"
 FROM customer_products_sales_data
 WHERE "StoreKey" = 0 
 GROUP BY "StoreKey", "Country"
-ORDER BY "total_sales_USD" DESC;
+ORDER BY "revenue_USD" DESC;
 
---x. countries and their offline sales:
+--13. countries and their offline sales REVENUE:
 
 SELECT "StoreKey"
 		,"Country"
-		, ROUND(SUM ("Total Product Price")) AS "total_sales_USD"
+		, ROUND(SUM ("Total Product Price")) AS "revenue_USD"
 FROM customer_products_sales_data
 WHERE "StoreKey" != 0 
 GROUP BY "StoreKey", "Country"
-ORDER BY "total_sales_USD" DESC;
+ORDER BY "revenue_USD" DESC;
+
+----------------------------------------
+
+---without storekey
+
+SELECT "Country"
+		, ROUND(SUM ("Total Product Price")) AS "revenue_USD"
+FROM customer_products_sales_data
+WHERE "StoreKey" != 0 
+GROUP BY "Country"
+ORDER BY "revenue_USD" DESC;
 
 
---X. To calculate average sales per store PER country: # Geographical analysis
+--14. To calculate average sales per store PER country: # Geographical analysis
 
 SELECT
 country_sales.country, 
@@ -198,7 +180,7 @@ GROUP BY "country"
 ORDER BY COUNT ("StoreKey") DESC) AS country_sales;
 
 
---x. No of Online purchases/ orders in each country:
+--15. No of Online customers in each country:
 
 SELECT "Country"
 		, COUNT(DISTINCT "CustomerKey") AS "customer_count"
@@ -207,7 +189,7 @@ WHERE "StoreKey" = '0'
 GROUP BY "Country" 
 ORDER BY COUNT ("CustomerKey") DESC;
 
---x. No. of OFFLINE purchases/ orders in each country:
+--16. No. of OFFLINE customers in each country:
 
 SELECT "Country"
 		, COUNT(DISTINCT "CustomerKey") AS "customer_count"
@@ -217,7 +199,7 @@ GROUP BY "Country"
 ORDER BY COUNT ("CustomerKey") DESC;
 
 
---x. no. of offline and online PURCHASES in each country:
+--17. no. of offline and online PURCHASES in each country:
 
 SELECT mode_purchase_dets.country, 
 	SUM(CASE WHEN mode_purchase_dets.storekey != '0' THEN 1 END) AS "total_offline_purchases",
@@ -229,25 +211,8 @@ FROM
 	GROUP BY "Country","CustomerKey", "StoreKey") AS mode_purchase_dets
 GROUP BY mode_purchase_dets.country;
 
---x. stores without sales:
 
-
-
-
-
---X. To calculate frequency of purchase:
-
-
-
-
-
-
-
---x. having identified one country
-
---- D. STORES ANALYSIS:
-
---x. the stores without any sales
+--18. the stores without any sales
 
 SELECT "StoreKey", "Order Value"
 FROM stores_sales_data
@@ -255,16 +220,17 @@ GROUP BY "StoreKey", "Order Value"
 HAVING "Order Value" = '0';
 
 
---X. To calculate no. of stores per country:
+--19. To calculate no. of stores per country:
 
 SELECT "Country", COUNT (DISTINCT "StoreKey") AS "store_count",
+COUNT(DISTINCT "CustomerKey") AS "total_no_customers",
 ROUND(SUM ("Total Product Price")) AS "total_sales_USD"
 FROM customer_products_sales_data
 GROUP BY "Country"
 ORDER BY COUNT ("StoreKey") DESC;
 
 
---x. to calculate the sales in each store:
+--20. to calculate the sales in each store:
 
 SELECT "StoreKey"
 		, ROUND(SUM ("Total Product Price")) AS "total_sales_USD"
@@ -272,7 +238,7 @@ FROM customer_products_sales_data
 GROUP BY "StoreKey"
 ORDER BY "StoreKey" ASC;
 
---X. To calculate average sales per store PER country: # Geographical analysis
+--21. To calculate average sales per store PER country: # Geographical analysis
 
 SELECT
 country_sales.country, 
@@ -286,7 +252,7 @@ FROM customer_products_sales_data
 GROUP BY "country"
 ORDER BY COUNT ("StoreKey") DESC) AS country_sales;
 
---x. no. of customers visiting each stores:
+--22. no. of customers visiting each stores:
 
 SELECT "Country"
 		,"StoreKey"
@@ -295,14 +261,14 @@ FROM customer_products_sales_data
 GROUP BY "Country", "StoreKey"
 ORDER BY "StoreKey" ASC;
 
---x. List of customers purchasing from multiple stores/ online:(?????)
+--23. List of customers purchasing from multiple stores/ online:
 
-SELECT "CustomerKey"	
+SELECT "CustomerKey", "Name"	
 FROM customer_sales_data
-GROUP BY 1
+GROUP BY 1, 2
 HAVING COUNT(DISTINCT "StoreKey")>1;
 
---x. Count of customers purchasing from multiple stores/ online: (????)
+--24. Count of customers purchasing from multiple stores/ online: 
 
 SELECT COUNT (repetitive_customer_data.rep_customers)
 FROM (SELECT "CustomerKey"	AS "rep_customers"
@@ -311,13 +277,13 @@ FROM (SELECT "CustomerKey"	AS "rep_customers"
 	HAVING COUNT(DISTINCT "StoreKey")>1) AS repetitive_customer_data;
 
 
---X. no. of customers who havent made any purchase:
+--25. no. of customers who havent made any purchase:
 
 SELECT COUNT("CustomerKey")
 FROM nil_purchase_customers
 WHERE "Order Number" = '0';
 
---x. currency and sales:
+--26. currency and sales:
 
 SELECT "Country"
 		, COUNT(DISTINCT "CustomerKey") AS "no of customers"
@@ -326,3 +292,13 @@ SELECT "Country"
 FROM customer_products_sales_stores_data
 GROUP BY "Country", "Currency Code"
 ORDER BY "no of products" DESC;
+
+
+--27. customer location and average order value taking exchange rates into consideration:
+
+SELECT "State", "City"
+		, ROUND(AVG("Quantity" * "Unit Price USD" * "Exchange" )) as AVG_total_sales
+FROM sales_exchange_rate_analysis
+GROUP BY "State", "City"
+ORDER BY AVG_total_sales DESC;
+LIMIT 25
